@@ -47,8 +47,42 @@ resource "aws_instance" "web" {
   instance_type = var.type[1]
   subnet_id = element(aws_subnet.subnet.*.id,count.index)
   key_name = "chahkkey"
-  vpc_security_group_ids = ["sg-0e9ca3b524759a94c"]
+  vpc_security_group_ids = [aws_security_group.sg.id]
   tags = {
     Name = "OS${count.index+1}"
+  }
+}
+resource "aws_security_group" "sg" {
+  name        = "sgterraform"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description      = "httpallow"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"] 
+    ipv6_cidr_blocks = ["::/0"]
+  }
+  ingress {
+    description      = "httpallow"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"] 
+    ipv6_cidr_blocks = ["::/0"]
+  }
+ 
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "terraform_sg"
   }
 }
