@@ -30,7 +30,7 @@ resource "aws_route_table" "rt" {
     gateway_id = aws_internet_gateway.gw.id
   }
   tags = {
-    Name = "route_table"
+    Name = "route_table_sheersh"
   }
 }
 
