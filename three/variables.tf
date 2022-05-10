@@ -21,3 +21,8 @@ variable "type"{
 type = list
 default = ["t2.micro" , "t2.small" , "t2.medium"]
 }
+
+variable "ports"{
+  type=list
+  default=["80" , "22"]
+}
